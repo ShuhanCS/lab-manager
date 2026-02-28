@@ -1,9 +1,6 @@
--- Enable UUID extension
-create extension if not exists "uuid-ossp";
-
 -- Labs
 create table labs (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   name text not null,
   slug text unique not null,
   institution text,
@@ -13,7 +10,7 @@ create table labs (
 
 -- Lab members (join table: user <-> lab)
 create table members (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
   lab_id uuid not null references labs(id) on delete cascade,
   role text not null check (role in ('owner', 'admin', 'member')) default 'member',
@@ -23,7 +20,7 @@ create table members (
 
 -- Locations (hierarchical)
 create table locations (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   lab_id uuid not null references labs(id) on delete cascade,
   parent_id uuid references locations(id) on delete set null,
   name text not null,
@@ -33,7 +30,7 @@ create table locations (
 
 -- Inventory items
 create table inventory_items (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   lab_id uuid not null references labs(id) on delete cascade,
   created_by uuid not null references auth.users(id),
   name text not null,
@@ -57,7 +54,7 @@ create table inventory_items (
 
 -- Equipment (extends inventory items where type=equipment)
 create table equipment (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   inventory_item_id uuid not null references inventory_items(id) on delete cascade,
   serial_number text,
   model_number text,
@@ -72,7 +69,7 @@ create table equipment (
 
 -- Maintenance logs
 create table maintenance_logs (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   equipment_id uuid not null references equipment(id) on delete cascade,
   performed_by uuid not null references auth.users(id),
   date date not null default current_date,
@@ -85,7 +82,7 @@ create table maintenance_logs (
 
 -- Grants / budgets
 create table grants (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   lab_id uuid not null references labs(id) on delete cascade,
   created_by uuid not null references auth.users(id),
   name text not null,
@@ -100,7 +97,7 @@ create table grants (
 
 -- Transactions (purchases linked to grants)
 create table transactions (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   grant_id uuid not null references grants(id) on delete cascade,
   inventory_item_id uuid references inventory_items(id) on delete set null,
   amount numeric not null,
@@ -114,7 +111,7 @@ create table transactions (
 
 -- Activity log
 create table activity_log (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   lab_id uuid not null references labs(id) on delete cascade,
   user_id uuid not null references auth.users(id),
   action text not null,
