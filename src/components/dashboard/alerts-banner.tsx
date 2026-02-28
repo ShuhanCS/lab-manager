@@ -73,12 +73,24 @@ export function AlertsBanner({
                         ({item.quantity} {item.unit})
                       </span>
                     </span>
-                    <Link
-                      href={`/${labSlug}/inventory/${item.id}`}
-                      className={`text-xs font-medium underline ${textColor} hover:opacity-75`}
-                    >
-                      Reorder
-                    </Link>
+                    <span className="flex items-center gap-2">
+                      {item.conductscience_product_id && (
+                        <a
+                          href={`https://conductscience.com/?p=${item.conductscience_product_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-medium text-blue-600 hover:text-blue-800"
+                        >
+                          Reorder
+                        </a>
+                      )}
+                      <Link
+                        href={`/${labSlug}/inventory/${item.id}`}
+                        className={`text-xs font-medium underline ${textColor} hover:opacity-75`}
+                      >
+                        {item.conductscience_product_id ? 'View' : 'Reorder'}
+                      </Link>
+                    </span>
                   </li>
                 ))}
               </ul>

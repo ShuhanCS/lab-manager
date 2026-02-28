@@ -15,6 +15,7 @@ import {
   getLabLocations,
 } from '@/lib/supabase/inventory'
 import type { InventoryItem, Location } from '@/lib/supabase/types'
+import { ProductLinker } from './product-linker'
 
 interface ItemFormProps {
   mode: 'create' | 'edit'
@@ -34,6 +35,8 @@ export function ItemForm({ mode, item, onSuccess }: ItemFormProps) {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
+    watch,
   } = useForm<InventoryItemFormValues>({
     resolver: zodResolver(inventoryItemSchema),
     defaultValues: item
@@ -51,6 +54,7 @@ export function ItemForm({ mode, item, onSuccess }: ItemFormProps) {
           supplier: item.supplier ?? undefined,
           expiration_date: item.expiration_date ?? undefined,
           barcode: item.barcode,
+          conductscience_product_id: item.conductscience_product_id,
         }
       : {
           name: '',
@@ -60,6 +64,8 @@ export function ItemForm({ mode, item, onSuccess }: ItemFormProps) {
           min_threshold: 0,
         },
   })
+
+  const csProductId = watch('conductscience_product_id') ?? null
 
   // Fetch lab locations for the dropdown
   useEffect(() => {
@@ -349,6 +355,18 @@ export function ItemForm({ mode, item, onSuccess }: ItemFormProps) {
           placeholder="Scan or type barcode"
         />
       </div>
+
+      {/* ConductScience product link (optional) */}
+      <ProductLinker
+        value={csProductId}
+        onChange={(productId, meta) => {
+          setValue('conductscience_product_id', productId)
+          // Auto-fill catalog number from the product SKU if empty
+          if (meta?.sku && !watch('catalog_number')) {
+            setValue('catalog_number', meta.sku)
+          }
+        }}
+      />
 
       {/* Submit */}
       <div className="flex justify-end gap-3 pt-2">

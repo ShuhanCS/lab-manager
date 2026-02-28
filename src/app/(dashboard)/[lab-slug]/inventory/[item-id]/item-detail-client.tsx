@@ -13,6 +13,7 @@ import type { InventoryItem, ActivityLog } from '@/lib/supabase/types'
 import { StatusBadge } from '@/components/inventory/status-badge'
 import { TypeBadge } from '@/components/inventory/type-badge'
 import { ItemFormModal } from '@/components/inventory/item-form-modal'
+import { ReorderButton } from '@/components/inventory/reorder-button'
 
 interface ItemDetailClientProps {
   item: InventoryItem
@@ -133,6 +134,11 @@ export function ItemDetailClient({
           >
             +
           </button>
+
+          {/* Reorder button — visible when item is linked to ConductScience */}
+          <div className="ml-auto">
+            <ReorderButton item={item} />
+          </div>
         </div>
 
         {item.min_threshold > 0 && (
