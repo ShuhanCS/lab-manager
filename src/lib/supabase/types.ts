@@ -474,7 +474,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_lab_with_owner: {
+        Args: {
+          p_name: string
+          p_slug: string
+          p_institution?: string | null
+        }
+        Returns: string
+      }
     }
     Enums: {
       member_role: "owner" | "admin" | "member"
