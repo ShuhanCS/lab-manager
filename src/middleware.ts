@@ -40,7 +40,8 @@ export async function middleware(request: NextRequest) {
   const isPublic = publicPaths.some(
     (p) =>
       request.nextUrl.pathname === p ||
-      request.nextUrl.pathname.startsWith('/auth/')
+      request.nextUrl.pathname.startsWith('/auth/') ||
+      request.nextUrl.pathname.startsWith('/invite/')
   )
 
   // Redirect unauthenticated users to login
