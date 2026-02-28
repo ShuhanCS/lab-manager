@@ -24,6 +24,7 @@ export const inventoryItemSchema = z.object({
 })
 
 export type InventoryItemInput = z.infer<typeof inventoryItemSchema>
+export type InventoryItemFormValues = z.input<typeof inventoryItemSchema>
 
 export function validateInventoryItem(data: unknown) {
   return inventoryItemSchema.safeParse(data)
