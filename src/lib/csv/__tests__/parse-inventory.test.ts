@@ -64,11 +64,8 @@ describe('CSV parsing', () => {
   })
 
   it('rejects negative quantity', () => {
-    const csv = 'Name,Type,Quantity,Unit\nTest,-1 Item,reagent,-5,mL'
-    // This CSV has "Test" as name and "-1 Item" as type
-    // Let me write a cleaner test:
-    const csv2 = 'Name,Type,Quantity,Unit\nTest Item,reagent,-5,mL'
-    const result = parseInventoryCsv(csv2)
+    const csv = 'Name,Type,Quantity,Unit\nTest Item,reagent,-5,mL'
+    const result = parseInventoryCsv(csv)
     expect(result.valid).toHaveLength(0)
     expect(result.errors).toHaveLength(1)
     expect(result.errors[0].field).toBe('quantity')

@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import type { CSProduct } from '@/lib/conductscience/search'
 
 interface ProductLinkerProps {
@@ -88,10 +89,13 @@ export function ProductLinker({ value, onChange }: ProductLinkerProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {linked.images[0] && (
-              <img
+              <Image
                 src={linked.images[0].src}
                 alt={linked.images[0].alt || linked.name}
+                width={40}
+                height={40}
                 className="h-10 w-10 rounded-md object-cover"
+                unoptimized
               />
             )}
             <div className="min-w-0">
@@ -148,10 +152,13 @@ export function ProductLinker({ value, onChange }: ProductLinkerProps) {
                 className="flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-gray-50 transition-colors"
               >
                 {product.images[0] ? (
-                  <img
+                  <Image
                     src={product.images[0].src}
                     alt={product.images[0].alt || product.name}
+                    width={32}
+                    height={32}
                     className="h-8 w-8 flex-shrink-0 rounded object-cover"
+                    unoptimized
                   />
                 ) : (
                   <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-gray-100 text-xs text-gray-400">

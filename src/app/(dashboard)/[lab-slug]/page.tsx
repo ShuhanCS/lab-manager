@@ -8,8 +8,7 @@ import { StatsCards } from '@/components/dashboard/stats-cards'
 import { AlertsBanner } from '@/components/dashboard/alerts-banner'
 import { ActivityFeed } from '@/components/dashboard/activity-feed'
 import { QuickActions } from '@/components/dashboard/quick-actions'
-import type { EquipmentWithItem } from '@/lib/supabase/equipment'
-import type { InventoryItem, ActivityLog } from '@/lib/supabase/types'
+import type { ActivityLog } from '@/lib/supabase/types'
 
 export default async function LabDashboard({
   params,

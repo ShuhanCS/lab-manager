@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useLab } from '@/components/dashboard/lab-context'
 import { createClient } from '@/lib/supabase/client'
 import { deleteTransaction } from '@/lib/supabase/grants'
 import type { Transaction } from '@/lib/supabase/types'
@@ -10,8 +9,6 @@ import Papa from 'papaparse'
 
 interface TransactionTableProps {
   transactions: Transaction[]
-  /** Grant categories for displaying category badges */
-  categories: string[]
   /** Whether current user can delete (admin/owner) */
   canDelete: boolean
   onAddTransaction: () => void
@@ -20,13 +17,11 @@ interface TransactionTableProps {
 
 export function TransactionTable({
   transactions,
-  categories,
   canDelete,
   onAddTransaction,
   onDeleted,
 }: TransactionTableProps) {
   const router = useRouter()
-  const { lab } = useLab()
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const formatCurrency = (n: number) =>

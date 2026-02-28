@@ -253,7 +253,6 @@ export async function getUpcomingCalibrations(
   // Fetch all equipment for the lab that has calibration tracking
   const allEquipment = await getEquipment(supabase, labId)
 
-  const now = new Date()
   const cutoff = new Date()
   cutoff.setDate(cutoff.getDate() + days)
 

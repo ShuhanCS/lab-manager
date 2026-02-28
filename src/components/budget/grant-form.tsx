@@ -96,15 +96,6 @@ export function GrantForm({ mode, grant, onSuccess }: GrantFormProps) {
     }
   }
 
-  // Calculate total allocated across categories
-  const totalAllocated = fields.reduce((sum, _field, index) => {
-    const val = Number(
-      (document.getElementById(`categories.${index}.allocated`) as HTMLInputElement)
-        ?.value ?? 0
-    )
-    return sum + (isNaN(val) ? 0 : val)
-  }, 0)
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {error && (

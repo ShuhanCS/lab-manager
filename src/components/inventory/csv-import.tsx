@@ -28,17 +28,15 @@ export function CsvImportModal({ open, onClose }: CsvImportModalProps) {
   const [importErrors, setImportErrors] = useState<string[]>([])
   const [dragOver, setDragOver] = useState(false)
 
-  // Reset state when modal closes
-  useEffect(() => {
-    if (!open) {
-      setState('idle')
-      setValidRows([])
-      setErrors([])
-      setImportProgress(0)
-      setImportErrors([])
-      setDragOver(false)
-    }
-  }, [open])
+  const handleClose = useCallback(() => {
+    setState('idle')
+    setValidRows([])
+    setErrors([])
+    setImportProgress(0)
+    setImportErrors([])
+    setDragOver(false)
+    onClose()
+  }, [onClose])
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -55,13 +53,13 @@ export function CsvImportModal({ open, onClose }: CsvImportModalProps) {
   // Close on Escape
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape' && state !== 'importing') onClose()
+      if (e.key === 'Escape' && state !== 'importing') handleClose()
     }
     if (open) {
       document.addEventListener('keydown', handleKeyDown)
       return () => document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [open, onClose, state])
+  }, [open, handleClose, state])
 
   const handleFile = useCallback((file: File) => {
     if (!file.name.endsWith('.csv') && file.type !== 'text/csv') {
@@ -151,7 +149,7 @@ export function CsvImportModal({ open, onClose }: CsvImportModalProps) {
       {/* Overlay */}
       <div
         className="fixed inset-0 z-40 bg-black/30 transition-opacity"
-        onClick={state !== 'importing' ? onClose : undefined}
+        onClick={state !== 'importing' ? handleClose : undefined}
       />
 
       {/* Modal */}
@@ -163,7 +161,7 @@ export function CsvImportModal({ open, onClose }: CsvImportModalProps) {
               Import Inventory from CSV
             </h2>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               disabled={state === 'importing'}
               className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors disabled:opacity-40"
               aria-label="Close"
@@ -381,7 +379,7 @@ export function CsvImportModal({ open, onClose }: CsvImportModalProps) {
                   </>
                 )}
                 <button
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
                 >
                   Done

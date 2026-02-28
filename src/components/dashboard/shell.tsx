@@ -37,122 +37,120 @@ export function DashboardShell({ user, labs, children }: DashboardShellProps) {
     router.push('/login')
   }
 
-  function NavContent() {
-    return (
-      <>
-        {/* Lab selector */}
-        <div className="px-3 py-4">
-          {currentLab ? (
-            <div className="mb-1">
-              <p className="truncate text-sm font-semibold text-gray-900">
-                {currentLab.name}
+  const navContent = (
+    <>
+      {/* Lab selector */}
+      <div className="px-3 py-4">
+        {currentLab ? (
+          <div className="mb-1">
+            <p className="truncate text-sm font-semibold text-gray-900">
+              {currentLab.name}
+            </p>
+            {currentLab.institution && (
+              <p className="truncate text-xs text-gray-500">
+                {currentLab.institution}
               </p>
-              {currentLab.institution && (
-                <p className="truncate text-xs text-gray-500">
-                  {currentLab.institution}
-                </p>
-              )}
-            </div>
-          ) : (
-            <p className="text-sm font-semibold text-gray-900">Lab Manager</p>
-          )}
+            )}
+          </div>
+        ) : (
+          <p className="text-sm font-semibold text-gray-900">Lab Manager</p>
+        )}
 
-          {/* Lab switcher — show if user has multiple labs */}
-          {labs.length > 1 && (
-            <select
-              value={currentLabSlug ?? ''}
-              onChange={(e) => {
-                if (e.target.value) router.push(`/${e.target.value}`)
-              }}
-              className="mt-2 w-full rounded-md border border-gray-200 bg-white px-2 py-1.5 text-xs text-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-            >
-              {!currentLabSlug && (
-                <option value="" disabled>
-                  Select a lab
-                </option>
-              )}
-              {labs.map((lab) => (
-                <option key={lab.id} value={lab.slug}>
-                  {lab.name}
-                </option>
-              ))}
-            </select>
-          )}
-        </div>
-
-        {/* Divider */}
-        <div className="border-t border-gray-200" />
-
-        {/* Navigation */}
-        <nav className="flex-1 px-2 py-3">
-          {currentLabSlug ? (
-            <ul className="space-y-0.5">
-              {navItems.map((item) => {
-                const href = `/${currentLabSlug}${item.href}`
-                const isActive =
-                  item.href === ''
-                    ? pathname === `/${currentLabSlug}`
-                    : pathname.startsWith(href)
-
-                return (
-                  <li key={item.label}>
-                    <Link
-                      href={href}
-                      onClick={() => setSidebarOpen(false)}
-                      className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                        isActive
-                          ? 'bg-blue-50 text-blue-600'
-                          : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                      }`}
-                    >
-                      <item.icon active={isActive} />
-                      {item.label}
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-          ) : (
-            <div className="px-3 py-4 text-sm text-gray-500">
-              {labs.length === 0 ? (
-                <Link
-                  href="/new-lab"
-                  className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  + Create your first lab
-                </Link>
-              ) : (
-                <p>Select a lab to get started</p>
-              )}
-            </div>
-          )}
-        </nav>
-
-        {/* New lab link */}
-        <div className="border-t border-gray-200 px-2 py-2">
-          <Link
-            href="/new-lab"
-            onClick={() => setSidebarOpen(false)}
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+        {/* Lab switcher — show if user has multiple labs */}
+        {labs.length > 1 && (
+          <select
+            value={currentLabSlug ?? ''}
+            onChange={(e) => {
+              if (e.target.value) router.push(`/${e.target.value}`)
+            }}
+            className="mt-2 w-full rounded-md border border-gray-200 bg-white px-2 py-1.5 text-xs text-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
           >
-            <PlusIcon />
-            New lab
-          </Link>
-        </div>
+            {!currentLabSlug && (
+              <option value="" disabled>
+                Select a lab
+              </option>
+            )}
+            {labs.map((lab) => (
+              <option key={lab.id} value={lab.slug}>
+                {lab.name}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
 
-        {/* User section */}
-        <div className="border-t border-gray-200 px-3 py-3">
-          <p className="truncate text-sm text-gray-700">{user.email}</p>
-          <button
-            onClick={handleSignOut}
-            className="mt-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
-          >
-            Sign out
-          </button>
-        </div>
-      </>
-    )
-  }
+      {/* Divider */}
+      <div className="border-t border-gray-200" />
+
+      {/* Navigation */}
+      <nav className="flex-1 px-2 py-3">
+        {currentLabSlug ? (
+          <ul className="space-y-0.5">
+            {navItems.map((item) => {
+              const href = `/${currentLabSlug}${item.href}`
+              const isActive =
+                item.href === ''
+                  ? pathname === `/${currentLabSlug}`
+                  : pathname.startsWith(href)
+
+              return (
+                <li key={item.label}>
+                  <Link
+                    href={href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'bg-blue-50 text-blue-600'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    }`}
+                  >
+                    <item.icon active={isActive} />
+                    {item.label}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        ) : (
+          <div className="px-3 py-4 text-sm text-gray-500">
+            {labs.length === 0 ? (
+              <Link
+                href="/new-lab"
+                className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium"
+              >
+                + Create your first lab
+              </Link>
+            ) : (
+              <p>Select a lab to get started</p>
+            )}
+          </div>
+        )}
+      </nav>
+
+      {/* New lab link */}
+      <div className="border-t border-gray-200 px-2 py-2">
+        <Link
+          href="/new-lab"
+          onClick={() => setSidebarOpen(false)}
+          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+        >
+          <PlusIcon />
+          New lab
+        </Link>
+      </div>
+
+      {/* User section */}
+      <div className="border-t border-gray-200 px-3 py-3">
+        <p className="truncate text-sm text-gray-700">{user.email}</p>
+        <button
+          onClick={handleSignOut}
+          className="mt-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+        >
+          Sign out
+        </button>
+      </div>
+    </>
+  )
 
   return (
     <div className="flex h-screen bg-white">
@@ -166,7 +164,7 @@ export function DashboardShell({ user, labs, children }: DashboardShellProps) {
 
       {/* Sidebar — desktop */}
       <aside className="hidden w-60 flex-shrink-0 flex-col border-r border-gray-200 bg-gray-50 lg:flex">
-        <NavContent />
+        {navContent}
       </aside>
 
       {/* Sidebar — mobile */}
@@ -175,7 +173,7 @@ export function DashboardShell({ user, labs, children }: DashboardShellProps) {
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <NavContent />
+        {navContent}
       </aside>
 
       {/* Main content */}

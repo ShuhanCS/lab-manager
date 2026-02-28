@@ -157,7 +157,6 @@ export function GrantDetailClient({
       {/* Transaction table */}
       <TransactionTable
         transactions={transactions}
-        categories={categories}
         canDelete={canDelete}
         onAddTransaction={() => setShowAddTx(true)}
         onDeleted={() => {

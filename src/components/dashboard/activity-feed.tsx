@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { ActivityLog, Json } from '@/lib/supabase/types'
+import type { ActivityLog } from '@/lib/supabase/types'
 
 type ActivityFeedProps = {
   labSlug: string

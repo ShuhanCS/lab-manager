@@ -8,7 +8,6 @@ import { createClient } from '@/lib/supabase/client'
 import { useLab } from '@/components/dashboard/lab-context'
 import {
   inventoryItemSchema,
-  type InventoryItemInput,
   type InventoryItemFormValues,
   createInventoryItem,
   updateInventoryItem,
