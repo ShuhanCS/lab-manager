@@ -24,9 +24,11 @@ const columnHelper = createColumnHelper<InventoryItem>()
 interface InventoryTableProps {
   initialItems: InventoryItem[]
   onAddItem: () => void
+  /** Increment this counter to force a refetch (e.g. from realtime updates) */
+  refetchTrigger?: number
 }
 
-export function InventoryTable({ initialItems, onAddItem }: InventoryTableProps) {
+export function InventoryTable({ initialItems, onAddItem, refetchTrigger = 0 }: InventoryTableProps) {
   const router = useRouter()
   const { lab } = useLab()
   const { filters } = useInventoryStore()
@@ -63,6 +65,13 @@ export function InventoryTable({ initialItems, onAddItem }: InventoryTableProps)
       setItems(initialItems)
     }
   }, [filters, fetchItems, initialItems])
+
+  // Refetch when realtime trigger fires
+  useEffect(() => {
+    if (refetchTrigger > 0) {
+      fetchItems()
+    }
+  }, [refetchTrigger, fetchItems])
 
   const columns = useMemo(
     () => [
